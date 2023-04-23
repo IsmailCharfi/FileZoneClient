@@ -3,6 +3,8 @@ from PyQt5.QtWidgets import QLabel, QLineEdit, QPushButton, QVBoxLayout, QWidget
     QMessageBox
 from PyQt5.QtCore import Qt
 
+from model import User
+
 
 class AuthWidget(QWidget):
     def __init__(self, parent=None):
@@ -53,9 +55,10 @@ class AuthWidget(QWidget):
             if response.status_code == 500:
                 QMessageBox.critical(self, "Login Failure", "an error has occurred")
             elif response.status_code == 200:
-                print(response.content)
+                self.email_edit.setText("")
+                self.password_edit.setText("")
                 self.error_label.setText("")
-                self.window().user = 1
+                self.window().user = User(response.json().get("user"))
                 self.window().show_main_widget()
             else:
                 self.error_label.setText("Invalid username or password")

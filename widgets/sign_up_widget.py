@@ -55,7 +55,12 @@ class SignUpWidget(QWidget):
             response = self.window().api.post("/sign-up", data={"fullname": fullname, "email": email, "password": password}, kerberos=False)
             if response.status_code == 500:
                 QMessageBox.critical(self, "Sign up Failure", "an error has occurred")
+            if response.status_code == 400:
+                self.error_label.setText("User already exists")
             elif response.status_code == 200:
+                self.fullname_edit.setText("")
+                self.email_edit.setText("")
+                self.password_edit.setText("")
                 self.error_label.setText("")
                 self.window().auth_widget.error_label.setText("Account created")
                 self.window().show_auth_widget()

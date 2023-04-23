@@ -36,21 +36,14 @@ class RestApi:
 
         return response
 
-    def put(self, path, data=None, headers=None, files=None, kerberos=True):
+    def put(self, path, data=None, headers=None, kerberos=True):
         if data and isinstance(data, dict):
             data = json.dumps(data)
-        if files:
-            if kerberos:
-                response = self.session.put(self.base_url + path, headers=headers, data=data, files=files,
-                                            verify=self.crt)
-            else:
-                response = requests.put(self.base_url + path, headers=headers, data=data, files=files, verify=self.crt)
 
+        if kerberos:
+            response = self.session.put(self.base_url + path, headers=headers, data=data, verify=self.crt)
         else:
-            if kerberos:
-                response = self.session.put(self.base_url + path, headers=headers, data=data, verify=self.crt)
-            else:
-                response = requests.put(self.base_url + path, headers=headers, data=data, verify=self.crt)
+            response = requests.put(self.base_url + path, headers=headers, data=data, verify=self.crt)
 
         return response
 
