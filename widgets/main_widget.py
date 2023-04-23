@@ -1,58 +1,8 @@
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QTreeWidget, QTreeWidgetItem
 from model.storable import Storable, StorableType
+from datetime import datetime
 
-fs = [
-    Storable(_id=1,
-             name="ROOT",
-             _type=StorableType.DIRECTORY,
-             children=[
-                 Storable(_id=2,
-                          name="Folder1",
-                          _type=StorableType.DIRECTORY,
-                          children=[]
-                          ),
-                 Storable(_id=3,
-                          name="Folder1",
-                          _type=StorableType.DIRECTORY,
-                          children=[Storable(_id=5,
-                                             name="File2",
-                                             _type=StorableType.MULTI_MEDIA,
-                                             children=[]
-                                             )]
-                          ),
-                 Storable(_id=4,
-                          name="File1",
-                          _type=StorableType.TEXT,
-                          children=[]
-                          )
-             ]
-             ),
-    Storable(_id=1,
-             name="ROOT2",
-             _type=StorableType.DIRECTORY,
-             children=[
-                 Storable(_id=2,
-                          name="Folder1",
-                          _type=StorableType.DIRECTORY,
-                          children=[]
-                          ),
-                 Storable(_id=3,
-                          name="Folder1",
-                          _type=StorableType.DIRECTORY,
-                          children=[Storable(_id=5,
-                                             name="File2",
-                                             _type=StorableType.MULTI_MEDIA,
-                                             children=[]
-                                             )]
-                          ),
-                 Storable(_id=4,
-                          name="File1",
-                          _type=StorableType.TEXT,
-                          children=[]
-                          )
-             ]
-             )
-]
+fs = []
 
 
 class MainWidget(QWidget):
@@ -77,9 +27,9 @@ class MainWidget(QWidget):
 
         # add sample files to the tree
         for item in fs:
-            self.drawNode(item, file_tree)
+            self.draw_node(item, file_tree)
 
-    def drawNode(self, item, parent):
+    def draw_node(self, item: Storable, parent):
         node = QTreeWidgetItem(parent)
         if item.type == StorableType.DIRECTORY:
             node.setText(0, item.name)
@@ -91,5 +41,5 @@ class MainWidget(QWidget):
 
         else:
             node.setText(0, item.name)
-            node.setText(1, f"{10} MB")
-            node.setText(2, "2022-01-01")
+            node.setText(1, f"{item.size} o")
+            node.setText(2, item.modified_at.strftime("%Y-%m-%d %H:%M:%S") if item.modified_at else "-")
