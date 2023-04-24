@@ -52,7 +52,7 @@ class SignUpWidget(QWidget):
         email = self.email_edit.text()
         password = self.password_edit.text()
         try:
-            response = self.window().api.post("/sign-up", data={"fullname": fullname, "email": email, "password": password}, kerberos=False)
+            response = self.window().api.post("/sign-up", data={"fullname": fullname, "email": email, "password": password}, use_kerberos=False)
             if response.status_code == 500:
                 QMessageBox.critical(self, "Sign up Failure", "an error has occurred")
             if response.status_code == 400:

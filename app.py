@@ -10,7 +10,7 @@ from widgets.auth_widget import AuthWidget
 from widgets.main_widget import MainWidget
 from widgets.sign_up_widget import SignUpWidget
 
-API_PATH = "https://filezone.com:5000"
+API_PATH = "https://server.filezone.com:5000"
 
 os.environ['REQUESTS_CA_BUNDLE'] = './certificate.crt'
 

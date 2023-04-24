@@ -36,7 +36,7 @@ class MainWidget(QWidget):
         self.main_layout.addWidget(self.file_tree)
 
     def refresh(self):
-        response = self.window().api.get(f"/users/{self.window().user.id}/root", kerberos=False)
+        response = self.window().api.get(f"/users/{self.window().user.id}/root")
         if response.status_code == 200:
             root = Storable(response.json())
             self.init_fs(root)
@@ -48,22 +48,21 @@ class MainWidget(QWidget):
         result = dialog.exec_()
         if result == QDialog.Accepted:
             name = dialog.get_name()
-            response = self.window().api.post(f"/{self.selected_storable.id}/add-folder", kerberos=False,
-                                              data={"name": name})
+            response = self.window().api.post(f"/{self.selected_storable.id}/add-folder", data={"name": name})
             if response.status_code == 200:
                 self.refresh()
             else:
                 QMessageBox.critical(self, "Failure", "an error has occurred")
 
     def delete(self):
-        response = self.window().api.delete(f"/{self.selected_storable.id}", kerberos=False)
+        response = self.window().api.delete(f"/{self.selected_storable.id}")
         if response.status_code == 200:
             self.refresh()
         else:
             QMessageBox.critical(self, "Failure", "an error has occurred")
 
     def download(self):
-        response = self.window().api.get(f"/{self.selected_storable.id}/content", kerberos=False)
+        response = self.window().api.get(f"/{self.selected_storable.id}/content")
         if response.status_code == 200:
             path, _ = QFileDialog.getSaveFileName(None, "Save File", self.selected_storable.name)
             if path:
@@ -75,8 +74,7 @@ class MainWidget(QWidget):
     def upload(self):
         path, _ = QFileDialog.getOpenFileName(None, "Select a file", "")
         if path:
-            response = self.window().api.post(f"/{self.selected_storable.id}/add-file", kerberos=False,
-                                              files={'file':  open(path, 'rb')})
+            response = self.window().api.post(f"/{self.selected_storable.id}/add-file", files={'file':  open(path, 'rb')})
             if response.status_code == 200:
                 self.refresh()
             else:

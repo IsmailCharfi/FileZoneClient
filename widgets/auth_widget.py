@@ -51,7 +51,7 @@ class AuthWidget(QWidget):
         email = self.email_edit.text()
         password = self.password_edit.text()
         try:
-            response = self.window().api.post("/login", data={"email": email, "password": password}, kerberos=False)
+            response = self.window().api.post("/login", data={"email": email, "password": password}, use_kerberos=False)
             if response.status_code == 500:
                 QMessageBox.critical(self, "Login Failure", "an error has occurred")
             elif response.status_code == 200:
